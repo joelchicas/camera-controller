@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Camera Controller</title>
+<meta name="viewport" content="width=device-width">
+<style>
+body { background:#66a3ff; font-family: Arial; text-align:center; }
+button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid black; font-size:16px; }
+</style>
+</head>
+<body>
+
+<h2>Camera Controller</h2>
+
+<button onmousedown="pan(-1)" onmouseup="stop()">⬅ Pan Left</button>
+<button onmousedown="pan(1)" onmouseup="stop()">Pan Right ➡</button>
+
+<hr>
+
+<button onclick="learn(1)">Learn 1</button>
+<button onclick="learn(2)">Learn 2</button>
+<button onclick="learn(3)">Learn 3</button>
+
+<br>
+
+<button onclick="gotoPos(1)">Go To 1</button>
+<button onclick="gotoPos(2)">Go To 2</button>
+<button onclick="gotoPos(3)">Go To 3</button>
+
+<hr>
+
+<button onclick="energize()">Energize</button>
+<button onclick="deenergize()">De-Energize</button>
+
+<hr>
+
+<button onclick="startTour()">Tour</button>
+<button onclick="stopTour()">Stop</button>
+<hr>
+
+<h3>Tour Delay</h3>
+
+<input type="range" min="0.5" max="10" step="0.5" value="2"
+       oninput="setDelay(this.value)">
+
+<span id="delayValue">2</span> sec
+
+<hr>
+
+<button onclick="reset()">Reset Zero</button>
+
+<script>
+const API = "http://" + location.hostname + ":8000";
+
+function pan(dir) {
+ fetch(API + "/api/pan/start", {
+   method:"POST",
+   headers:{'Content-Type':'application/json'},
+   body: JSON.stringify({direction:dir})
+ });
+}
+
+function stop() {
+ fetch(API + "/api/stop", {method:"POST"});
+}
+
+function learn(slot) {
+ fetch(API + "/api/learn", {
+  method:"POST",
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({slot:slot})
+ });
+}
+
+function gotoPos(slot) {
+ fetch(API + "/api/goto", {
+  method:"POST",
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({slot:slot})
+ });
+}
+
+function energize() {
+ fetch(API + "/api/energize", {method:"POST"});
+}
+
+function deenergize() {
+ fetch(API + "/api/deenergize", {method:"POST"});
+}
+
+function reset() {
+ fetch(API + "/api/reset", {method:"POST"});
+}
+
+function startTour() {
+ fetch(API + "/api/tour/start", {method:"POST"});
+}
+
+function stopTour() {
+ fetch(API + "/api/tour/stop", {method:"POST"});
+}
+
+function setDelay(val) {
+ document.getElementById("delayValue").innerText = val;
+
+ fetch(API + "/api/tour/delay", {
+   method: "POST",
+   headers: {'Content-Type':'application/json'},
+   body: JSON.stringify({delay: parseFloat(val)})
+ });
+}
+
+</script>
+
+</body>
+</html>

@@ -126,4 +126,4 @@ cd camera-controller/backend
 
 ### Open Web Interface from another device on your network:
 
-- http://192.168.0.4:8000
+- http://YOUR-RASPI-IP-ADDR:8000

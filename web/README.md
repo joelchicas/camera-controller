@@ -22,7 +22,7 @@ Web-based controller for Pololu Tic stepper motor camera rig.
 ## Installation
 
 ```bash
-git clone https://github.com/YOURUSERNAME/camera-controller.git
+git clone https://github.com/joelchicas/camera-controller.git
 cd camera-controller/backend
 pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000

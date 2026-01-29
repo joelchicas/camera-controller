@@ -1,5 +1,5 @@
 # 📷 Camera Controller – Raspberry Pi + Pololu Tic T825
-<img src="images/camera-controller-gui.png" alt="Camera Controller GUI" width="400">
+<img src="images/camera-controller-gui.png" alt="Camera Controller GUI" width="600">
 
 Web-based controller for a stepper motor powered camera pan rig using a **Pololu Tic T825 USB stepper controller**, **NEMA 17 stepper motor**, and a **Raspberry Pi**. This project provides a clean browser interface to control camera motion, store presets, and run automated cinematic pan tours.
 

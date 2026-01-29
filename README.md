@@ -23,7 +23,7 @@ Web-based controller for a stepper motor powered camera pan rig using a **Pololu
 | Raspberry Pi | Pi 3, Pi 4, or Pi Zero 2 W (recommended) |
 | Stepper Controller | Pololu Tic T825 USB Stepper Motor Controller |
 | Stepper Motor | NEMA 17 Bipolar Stepper Motor (92 oz-in torque) |
-| Power Supply | 24V DC Power Adapter (5A recommended) |
+| Power Supply | 24V DC Power Adapter (2A recommended) |
 | USB Cable | Micro USB (Pi → Pololu Tic) |
 | Camera Mount | Pan mount or tripod head (user choice) |
 
@@ -56,7 +56,7 @@ https://www.pololu.com/product/3131
 Recommended:
 
 - 24V DC output  
-- Minimum 5A current  
+- Minimum 2A current  
 - Center-positive barrel jack  
 
 Example:  

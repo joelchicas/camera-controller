@@ -123,7 +123,7 @@ cd camera-controller/backend
 
 ### Start Web Server:
 
-- uvicorn main:app --host 0.0.0.0 --port 8000
+- python3 uvicorn main:app --host 0.0.0.0 --port 8000
 
 ### Open Web Interface from another device on your network:
 

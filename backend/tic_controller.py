@@ -11,7 +11,7 @@ PRESET_FILE = "presets.json"
 PAN_SPEED = 25000
 
 # Cinematic motion tuning
-TOUR_DELAY = 2.0      # seconds between presets
+TOUR_DELAY = 10.0      # seconds between presets
 MAX_ACCEL = 3000     # steps/sec^2
 MAX_DECEL = 3000     # steps/sec^2
 
@@ -141,13 +141,18 @@ def go_to(slot: int):
 
 def wait_until_position_reached(timeout=20):
     t = init_tic()
+
+    # ✅ immediate exit if already at target
+    if abs(t.get_current_position() - t.get_target_position()) <= 2:
+        return
+        
     start_time = time.time()
 
     while True:
         current = t.get_current_position()
         target = t.get_target_position()
 
-        if current == target:
+        if abs(current - target) <= 2:
             break
 
         if time.time() - start_time > timeout:
@@ -191,6 +196,12 @@ def start_tour():
                 t = init_tic()
                 t.set_target_position(pos)
 
+            # ✅ re-assert target after planner settles    
+            time.sleep(1)
+
+            with lock:
+                t.set_target_position(pos)    
+
             wait_until_position_reached()
 
             # thread-safe delay read
@@ -212,7 +223,7 @@ def stop_tour():
 def set_tour_delay(seconds: float):
     global TOUR_DELAY
     with lock:
-        TOUR_DELAY = max(0.1, float(seconds))
+        TOUR_DELAY = min(20.0, max(1.0, float(seconds)))
 
     print(f"Tour delay set to {TOUR_DELAY}s")
 

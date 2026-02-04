@@ -223,7 +223,7 @@ def stop_tour():
 def set_tour_delay(seconds: float):
     global TOUR_DELAY
     with lock:
-        TOUR_DELAY = min(20.0, max(1.0, float(seconds)))
+        TOUR_DELAY = min(20.0, max(2.0, float(seconds)))
 
     print(f"Tour delay set to {TOUR_DELAY}s")
 

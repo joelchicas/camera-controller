@@ -12,17 +12,11 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 
 <h2>Camera Controller</h2>
 
-<button
-  onmousedown="pan(-1)" onmouseup="stop()"
-  ontouchstart="pan(-1); return false;"
-  ontouchend="stop(); return false;">
+<button id="panLeftBtn">
   ⬅ Pan Left
 </button>
 
-<button
-  onmousedown="pan(1)" onmouseup="stop()"
-  ontouchstart="pan(1); return false;"
-  ontouchend="stop(); return false;">
+<button id="panRightBtn">
   Pan Right ➡
 </button>
 
@@ -53,7 +47,6 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 
 <input type="range" min="2" max="20" step="1" value="10"
        oninput="setDelay(this.value)">
-
 <span id="delayValue">10</span> sec
 
 <hr>
@@ -63,18 +56,53 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 <script>
 const API = "http://" + location.hostname + ":8000";
 
+let panInterval = null;
+
+// ---------------- PAN FUNCTIONS ----------------
 function pan(dir) {
- fetch(API + "/api/pan/start", {
-   method:"POST",
-   headers:{'Content-Type':'application/json'},
-   body: JSON.stringify({direction:dir})
- });
+    // Send immediately once
+    fetch(API + "/api/pan/start", {
+        method:"POST",
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({direction:dir})
+    });
+
+    // Repeat every 200ms to ensure continuous movement
+    if (panInterval) clearInterval(panInterval);
+    panInterval = setInterval(() => {
+        fetch(API + "/api/pan/start", {
+            method:"POST",
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({direction:dir})
+        });
+    }, 200);
 }
 
 function stop() {
- fetch(API + "/api/stop", {method:"POST"});
+    if (panInterval) {
+        clearInterval(panInterval);
+        panInterval = null;
+    }
+    fetch(API + "/api/stop", {method:"POST"});
 }
 
+// ---------------- BUTTON EVENT LISTENERS ----------------
+const panLeftBtn = document.getElementById("panLeftBtn");
+const panRightBtn = document.getElementById("panRightBtn");
+
+panLeftBtn.addEventListener("mousedown", () => pan(-1));
+panLeftBtn.addEventListener("mouseup", stop);
+panLeftBtn.addEventListener("mouseleave", stop);
+panLeftBtn.addEventListener("touchstart", (e) => { pan(-1); e.preventDefault(); });
+panLeftBtn.addEventListener("touchend", stop);
+
+panRightBtn.addEventListener("mousedown", () => pan(1));
+panRightBtn.addEventListener("mouseup", stop);
+panRightBtn.addEventListener("mouseleave", stop);
+panRightBtn.addEventListener("touchstart", (e) => { pan(1); e.preventDefault(); });
+panRightBtn.addEventListener("touchend", stop);
+
+// ---------------- OTHER FUNCTIONS ----------------
 function learn(slot) {
  fetch(API + "/api/learn", {
   method:"POST",
@@ -113,7 +141,6 @@ function stopTour() {
 
 function setDelay(val) {
  document.getElementById("delayValue").innerText = val;
-
  fetch(API + "/api/tour/delay", {
    method: "POST",
    headers: {'Content-Type':'application/json'},

@@ -14,13 +14,15 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 
 <button
   onmousedown="pan(-1)" onmouseup="stop()"
-  ontouchstart="pan(-1)" ontouchend="stop()">
+  ontouchstart="pan(-1); return false;"
+  ontouchend="stop(); return false;">
   ⬅ Pan Left
 </button>
 
 <button
   onmousedown="pan(1)" onmouseup="stop()"
-  ontouchstart="pan(1)" ontouchend="stop()">
+  ontouchstart="pan(1); return false;"
+  ontouchend="stop(); return false;">
   Pan Right ➡
 </button>
 

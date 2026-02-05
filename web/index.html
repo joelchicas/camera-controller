@@ -6,6 +6,7 @@
 <style>
 body { background:#66a3ff; font-family: Arial; text-align:center; }
 button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid black; font-size:16px; }
+input[type=range] { width: 80%; }
 </style>
 </head>
 <body>
@@ -28,6 +29,23 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 
 <hr>
 
+<h3>Pan Slider</h3>
+
+<input type="range"
+       min="-1"
+       max="1"
+       step="0.05"
+       value="0"
+       id="panSlider"
+       oninput="panSliderMove(this.value)"
+       onmouseup="panSliderStop()"
+       ontouchend="panSliderStop()">
+
+<br>
+<span id="panValue">0</span>
+
+<hr>
+
 <button onclick="learn(1)">Learn 1</button>
 <button onclick="learn(2)">Learn 2</button>
 <button onclick="learn(3)">Learn 3</button>
@@ -47,6 +65,7 @@ button { padding:15px 25px; margin:5px; border-radius:15px; border:3px solid bla
 
 <button onclick="startTour()">Tour</button>
 <button onclick="stopTour()">Stop</button>
+
 <hr>
 
 <h3>Tour Delay</h3>
@@ -74,6 +93,26 @@ function pan(dir) {
 function stop() {
  fetch(API + "/api/stop", {method:"POST"});
 }
+
+// -------- PAN SLIDER --------
+
+function panSliderMove(val) {
+ document.getElementById("panValue").innerText = val;
+
+ fetch(API + "/api/pan/slider", {
+   method:"POST",
+   headers:{'Content-Type':'application/json'},
+   body: JSON.stringify({value: parseFloat(val)})
+ });
+}
+
+function panSliderStop() {
+ document.getElementById("panSlider").value = 0;
+ document.getElementById("panValue").innerText = 0;
+ stop();
+}
+
+// ----------------------------
 
 function learn(slot) {
  fetch(API + "/api/learn", {
@@ -120,7 +159,6 @@ function setDelay(val) {
    body: JSON.stringify({delay: parseFloat(val)})
  });
 }
-
 </script>
 
 </body>

@@ -134,28 +134,28 @@ cd camera-controller/backend
 ### Optional: Install as a System Service (Start on Boot)
 
 ```bash
-Copy the service file
+### Copy the service file
 
 - sudo cp ~/camera-controller/systemd/camera-controller.service /etc/systemd/system/
 
-Reload systemd
+### Reload systemd
 
 - sudo systemctl daemon-reexec
 - sudo systemctl daemon-reload
 
-Enable the service for your user
+### Enable the service for your user
 
 - sudo systemctl enable camera-controller@$(whoami).service
 
-Start it immediately
+### Start it immediately
 
 - sudo systemctl start camera-controller@$(whoami).service
 
-Verify Service Status
+### Verify Service Status
 
 - systemctl status camera-controller@$(whoami).service
 
-Access the Web Interface
+### Access the Web Interface
 
 - http://YOUR-RASPBERRY-PI-IP:8000
 

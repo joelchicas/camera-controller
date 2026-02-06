@@ -1,0 +1,21 @@
+[Unit]
+Description=Camera Controller API
+After=network.target
+
+[Service]
+Type=simple
+
+# IMPORTANT: %h expands to the user's HOME directory
+WorkingDirectory=%h/camera-controller/backend
+
+ExecStart=/usr/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
+
+Restart=always
+RestartSec=5
+
+# Ensure USB + Tic access
+User=%i
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
